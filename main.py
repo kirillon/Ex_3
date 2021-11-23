@@ -5,6 +5,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from faker import Factory
 
 
 def except_hook(cls, exception, traceback):
@@ -16,12 +17,13 @@ class MainPage(QMainWindow):
         uic.loadUi("main.ui", self)
         self.do_paint = False
         self.pushButton.clicked.connect(self.paint)
+        self.fake = Factory.create()
 
 
     def paintEvent(self,event):
         if self.do_paint:
             painter = QPainter(self)
-            painter.setBrush(QBrush(QColor("#c56c00")))
+            painter.setBrush(QBrush(QColor(self.fake.hex_color())))
             painter.drawEllipse(randint(0,500), randint(0,300), randint(10,700), randint(10,700))
 
             painter.end()
